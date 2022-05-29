@@ -1,0 +1,170 @@
+/*
+TUGAS AKHIR ALGORITMA & STRUKTUR DATA
+Oleh Kelompok 4
+Program Hospital Queue
+*/
+
+#include<iostream>
+using namespace std;
+
+// node untuk linked list
+struct antrian{
+//untuk menyimpan data dengan tipe data yang berbeda
+    int nomorAntrian;
+    string pasien;
+    antrian *next;
+} *head, *newNode, *temporaryNode, *currentnode, *tail; //pointer untuk menunjuk suatu variable
+
+// prototipe fungsi
+// prototipe fungsi untuk menyatakn bahwa fungsi ini ada
+void antrianbaru(int);
+void enqueue(antrian *);
+void dequeue();
+void cetakAntrian();
+bool isEmpty();
+void clear();
+
+/*
+ * Main Function
+ */
+int main(){
+    head = tail = NULL; //head dan tail kosong
+    char pilihan;
+    bool ongoing = true;
+    int nomorAntrian = 1;
+
+    while(ongoing){//perulangan saat program berjalan
+        system("cls"); //system clearscreen agar output tidak menumpuk
+        cout << endl;
+        cout << "=================================" << endl;
+        cout << "     Program  Hospital Queue     " << endl;
+        cout << "=================================" << endl;
+        cout << "1. Tambah Antrian Baru" << endl;
+        cout << "2. Panggil Antrian" << endl;
+        cout << "3. Tampilkan Antrian" << endl;
+        cout << "4. Hapus & reset Antrian" << endl;
+        cout << "5. KELUAR" << endl;
+        cout << "masukkan Pilihan: ";
+        cin >> pilihan;
+
+        //program pilihan
+        switch (pilihan){
+            case '1': //jika memilih no 1
+                antrianbaru(nomorAntrian);
+                nomorAntrian++;
+                break;
+            case '2': //jika memilih no 2
+                dequeue();
+                break;
+            case '3': //jika memilih no 3
+                cetakAntrian();
+                break;
+            case '4': //jika memeilih no 4
+                clear();
+                nomorAntrian = 1;
+                break;
+            case '5'://jika memilih no 5
+                cout << "\nProgram selesai.\n" << endl;
+                cout << "+----------------------------------------------+"<<endl;
+                cout << "|                  KELOMPOK 4                  |"<<endl;
+                cout << "+--+-------------------------------+-----------+"<<endl;
+                cout << "|01| Aldysa Abittama Aulya Yusuf   | 065121110 |"<<endl;
+                cout << "|02| Amalia Kartika Putri          | 065121118 |"<<endl;
+                cout << "|03| Indah Cahyani                 | 065121120 |"<<endl;
+                cout << "|04| Novi Khopipah                 | 065121113 |"<<endl;
+                cout << "|05| Laksana Fautza Liverpud Lians | 065121115 |"<<endl;
+                cout << "+--+-------------------------------+-----------+"<<endl;
+                ongoing = false; //program berhenti berjalan
+                break;
+            default://jika pilihan tidak ada di menu
+                cout << "pilihan Salah." << endl;
+                break;
+        }
+     system("pause"); //untuk memberhentikan system clearscreen
+    }
+    getchar();
+} // akhir int main
+
+// fungsi untuk membuat sebuah node baru
+void antrianbaru(int nomorAntrian){
+    string inputpasien;
+
+    cout << "masukkan nama pasien: ";
+    cin >> inputpasien;
+
+    newNode = new antrian(); //node baru = antrian baru
+    newNode->nomorAntrian = nomorAntrian; // membuat node baru untuk nommor antrian
+    newNode->pasien = inputpasien; //membuat node baru untuk nama pasien
+    newNode->next = NULL; //node baru selanjutnya sama dengan null
+
+    // untuk menambahkan node baru ke bagian akhir linked list
+    enqueue(newNode);
+}
+
+bool isEmpty(){ //data linkedlist
+    if(head == NULL){//jika awal kosong
+        return true;
+    } else {
+        return false;
+    }
+}
+
+//untuk menambahkan antrian baru
+void enqueue(antrian *newNode){
+    if(isEmpty()){
+        // jika linked list kosong, node baru akan menjadi node head dan tail
+        head = tail = newNode;
+    }else{
+        // jika tidak, node baru akan menjadi node tail
+        tail->next = newNode;
+        tail = newNode;
+    }
+    cout << "Nomor antrian " << newNode->nomorAntrian; //memasukkan variable nomor antrian
+    cout << " atas nama " << newNode->pasien << " berhasil ditambahkan." << endl; //memasukkan variable nama pasien
+}
+
+//untuk mengeluarkan antrian paling awal
+void dequeue(){
+    if(isEmpty()){
+        //jika linked list kosong
+        cout << "Queue is empty." << endl;
+    }else{
+        //jika linked list berisi data
+        currentnode = head; //node sekarang akan mengambil variable dari head atau awal
+        cout << "Nomor antrian " << currentnode->nomorAntrian; //mengambil variable nomor antrian paling awal
+        cout << " atas nama " << currentnode->pasien << " keluar." << endl; //mengambil variable nama pasien paling awal
+        head = head->next; //node head akan terisi oleh node selanjutnya
+    }
+}
+
+//untuk mencetak semua antrian yang ada
+void cetakAntrian(){
+    cout << "=================" << endl;
+    cout << "     Queue     " << endl;
+    cout << "=================" << endl;
+    if(isEmpty()){  //jika linked list kosong
+        cout << "Queue is empty." << endl;
+    }else{
+        //jika linked list berisi data
+        currentnode = head; //mengambil data dari awal
+        cout << "NO  Nama Pasien" << endl;
+        while(currentnode != NULL){  //jika current node tidak sama dengan null
+            cout << currentnode->nomorAntrian << ".  " << currentnode->pasien << endl; //mencetak nomor antrian dan nama pasien dari awal
+            currentnode = currentnode->next;  //mencetak node selanjutnya
+        }
+        cout << "=================" << endl;
+    }
+}
+
+//untuk menghpus semua node dan antrian
+void clear(){
+    currentnode = head; //mengambil data dari awal antrian
+    while(currentnode != NULL){ //jika currentnode tidak sama dengan  Null
+        temporaryNode = currentnode; //node sementara = node yang ada
+        temporaryNode->next = NULL; //node selanjutnya sama dengan kosong
+        currentnode = currentnode->next; // mengambil node selanjutnya
+    }
+    head = NULL; //head atau awal sama dengan null
+    temporaryNode == NULL; //node sementara sama dengan null
+    cout << "Antrian telah dihapus dan direset ke semula." << endl;
+}
